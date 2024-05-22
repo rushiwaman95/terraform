@@ -5,7 +5,7 @@ data "aws_ssm_parameter" "webserver-ami" {
 
 #Create SG for allowing TCP/80 & TCP/22
 resource "aws_security_group" "sg" {
-  name        = "${var.app_server_sg}"
+  name        = var.app_server_sg
   description = "Allow TCP/80 & TCP/22"
   vpc_id      = aws_vpc.vpc.id
   ingress {
@@ -29,16 +29,16 @@ resource "aws_security_group" "sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
     tags = {
-    Name    = "${var.app_server_sg}"
+    Name    = var.app_server_sg
   }
 }
 
 #Create Public Web Server
 resource "aws_instance" "webserver" {
   ami                         = data.aws_ssm_parameter.webserver-ami.value
-  instance_type               = "${var.instance_type}"
-  key_name                    = "${var.app_server_key_name}"
-  associate_public_ip_address = "${var.associate_public_ip_address}"
+  instance_type               = var.instance_type
+  key_name                    = var.app_server_key_name
+  associate_public_ip_address = var.associate_public_ip_address
   vpc_security_group_ids      = [aws_security_group.sg.id]
   subnet_id                   = aws_subnet.public-subnet.id
   user_data                   = file(var.user_data_file_path)
@@ -62,7 +62,7 @@ resource "aws_instance" "webserver" {
   # }
   
   tags = {
-    Name    = "${var.app_server_name}"
+    Name    = var.app_server_name
   }
 }
 
@@ -73,9 +73,9 @@ data "aws_instance" "webserver" {
 
 #create AMI 
 resource "aws_ami_from_instance" "jump-Server-AMI" {
-  name               = "${var.app_server_ami_name}"
+  name               = var.app_server_ami_name
   source_instance_id = data.aws_instance.webserver.id
   tags = {
-    Name    = "${var.app_server_ami_name}"
+    Name    = var.app_server_ami_name
   }
 }

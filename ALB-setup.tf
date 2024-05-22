@@ -62,7 +62,7 @@ resource "aws_launch_template" "launch-template" {
 
 #Create ALB Target Group
 resource "aws_lb_target_group" "target_group" {
-  name     = "${var.target_group_name}"
+  name     = var.target_group_name
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id

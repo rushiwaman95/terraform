@@ -19,11 +19,11 @@ data "aws_route_table" "main_route_table" {
 
 #Create VPC in ap-south-1
 resource "aws_vpc" "vpc" {
-  cidr_block           = "${var.vpc_cidr_block}"
-  enable_dns_support   = "${var.enable_dns_support}"
-  enable_dns_hostnames = "${var.enable_dns_hostnames}"
+  cidr_block           = var.vpc_cidr_block
+  enable_dns_support   = var.enable_dns_support
+  enable_dns_hostnames = var.enable_dns_hostnames
   tags = {
-    Name = "${var.vpc_name}"   
+    Name = var.vpc_name
   }
 }
 
@@ -57,11 +57,11 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_default_route_table" "Public-RouteTable" {
   default_route_table_id = data.aws_route_table.main_route_table.id
   route {
-    cidr_block = "${var.cidr_block_igw}"
+    cidr_block = var.cidr_block_igw
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "${var.public_route_table_name}"
+    Name = var.public_route_table_name
   }
 }
 
@@ -74,7 +74,7 @@ resource "aws_route_table" "Private-RouteTable" {
   #   gateway_id = aws_nat_gateway.NAT_GATEWAY.id
   # }
   tags = {
-    Name = "${var.private_route_table_name}"
+    Name = var.private_route_table_name
   }
 }
 
@@ -82,7 +82,7 @@ resource "aws_route_table" "Private-RouteTable" {
 resource "aws_subnet" "public-subnet" {
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "${var.public_subnet_1A_cidr_block}"
+  cidr_block        = var.public_subnet_1A_cidr_block
   tags = {
     Name = "${var.public_subnet_name}-1A"
   }
@@ -102,7 +102,7 @@ resource "aws_subnet" "public-subnet-b" {
 resource "aws_subnet" "private-subnet" {
   vpc_id     = aws_vpc.vpc.id
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
-  cidr_block = "${var.private_subnet_1A_cidr_block}"
+  cidr_block = var.private_subnet_1A_cidr_block
   tags = {
     Name = "${var.private_subnet_name}-1A"
   }
@@ -112,7 +112,7 @@ resource "aws_subnet" "private-subnet" {
 resource "aws_subnet" "private-subnet-b" {
   vpc_id     = aws_vpc.vpc.id
   availability_zone = element(data.aws_availability_zones.azs.names, 1)
-  cidr_block = "${var.private_subnet_1B_cidr_block}"
+  cidr_block = var.private_subnet_1B_cidr_block
   tags = {
     Name = "${var.private_subnet_name}-1B"
   }

@@ -4,9 +4,9 @@ provider "aws" {
   default_tags {
     tags = {
       CreatedBy = "Terraform"
-      Owner = "${var.owner}"
-      Project = "${var.project}"
-      Enviroment = "${var.enviroment}"
+      Owner = var.owner
+      Project = var.project
+      Enviroment = var.enviroment
     }
   }
 }
