@@ -1,6 +1,6 @@
 #Create SG for ALB
 resource "aws_security_group" "alb-sg" {
-  name        = "${var.alb_server_sg}"
+  name        = var.alb_server_sg
   description = "Allow TCP/80 & TCP/22"
   vpc_id      = aws_vpc.vpc.id  
   ingress {
@@ -17,13 +17,13 @@ resource "aws_security_group" "alb-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name    = "${var.alb_server_sg}"
+    Name    = var.alb_server_sg
   }
 }
 
 #Create SG for Launch Template
 resource "aws_security_group" "lauch-sg" {
-  name        = "${var.lauch_template_sg}"
+  name        = var.lauch_template_sg
   description = "Allow TCP/80"
   vpc_id      = aws_vpc.vpc.id  
   ingress {
@@ -41,21 +41,21 @@ resource "aws_security_group" "lauch-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name    = "${var.lauch_template_sg}"
+    Name    = var.lauch_template_sg
   }
 }
 
 #Create launch Template
 resource "aws_launch_template" "launch-template" {
-  name_prefix   = "${var.lauch_template_name}"
-  image_id = "${aws_ami_from_instance.jump-Server-AMI.id}"
-  instance_type = "${var.launch_template_instance_type}"
+  name_prefix   = var.lauch_template_name
+  image_id = aws_ami_from_instance.jump-Server-AMI.id
+  instance_type = var.launch_template_instance_type
   vpc_security_group_ids = [aws_security_group.lauch-sg.id]
   iam_instance_profile {
     name = "${aws_iam_instance_profile.ec2_profile.name}"
   }
   tags = {
-    Name    = "${var.lauch_template_name}"
+    Name    = var.lauch_template_name
 
   }
 }
@@ -73,9 +73,9 @@ resource "aws_lb_target_group" "target_group" {
 
 #Create ALB
 resource "aws_lb" "ALB" {
-  name               = "${var.ALB_name}"
+  name               = var.ALB_name
   internal           = false
-  load_balancer_type = "${var.load_balancer_type}"
+  load_balancer_type = var.load_balancer_type
   security_groups    = [aws_security_group.alb-sg.id]
   subnets            = [aws_subnet.public-subnet.id, aws_subnet.public-subnet-b.id]  
   enable_deletion_protection = false
