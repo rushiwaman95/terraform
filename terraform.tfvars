@@ -29,11 +29,11 @@ app_server_key_name = "Accelerator-6"  #change pem file name according.
 app_server_ami_id = "data.aws_ssm_parameter.webserver-ami.value"
 associate_public_ip_address = true
 app_server_ami_name = "App-Server-AMI"
-user_data_file_path = "C:/Users/rushikesh.waman/OneDrive - Flentas Technologies Pvt Ltd/Desktop/terra-POC/Enviroments/DEV/user_data_script/script.sh"
-policy_file_path     = "C:/Users/rushikesh.waman/OneDrive - Flentas Technologies Pvt Ltd/Desktop/terra-POC/Enviroments/DEV/user_data_script/iam_policy.json"
+user_data_file_path = "/user_data_script/script.sh"
+policy_file_path     = "/user_data_script/iam_policy.json"
 policy_name     = "iam_policy"
 policy_path     = "/"
-assume_role_file_path = "C:/Users/rushikesh.waman/OneDrive - Flentas Technologies Pvt Ltd/Desktop/terra-POC/Enviroments/DEV/user_data_script/trust_policy.json"
+assume_role_file_path = "user_data_script/trust_policy.json"
 assume_role_name = "CloudWatch_SSM_role"
 
 alb_server_sg = "AlbServerSG"
@@ -46,8 +46,6 @@ load_balancer_type = "application"
 sns_topic_name = "ALB_SNS_topic"
 sns_topic_protocol = "email"
 email_endpoints = [
-  "rushikesh.waman@flentas.com",
-  "rahul.bochare@flentas.com"
 ]
 
 alarm_500XX = "5XX-error" 
